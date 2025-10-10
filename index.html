@@ -10,13 +10,18 @@
   <style>
     .container { max-width: 1200px; }
 
-    /* HERO crossfade + layering */
+    /* HERO crossfade + layering (GPU hints reduce flicker) */
     .hero-slide {
       position: absolute;
       inset: 0;
       opacity: 0;
-      transition: opacity 1.2s ease-in-out;
-      z-index: 1; /* base */
+      transition: opacity 1.0s ease-in-out;
+      z-index: 1;
+      will-change: opacity;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
+      contain: paint;
     }
     .hero-slide.active { opacity: 1; z-index: 2; }
     .hero-slide video {
@@ -25,13 +30,15 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
+      pointer-events: none;
     }
-    /* Consistent readability: per-slide gradient (below text, above video) */
+    /* Per-slide gradient (between video and text) */
     .hero-slide::after {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.25), rgba(0,0,0,0.10));
+      background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.28), rgba(0,0,0,0.10));
       z-index: 3;
       pointer-events: none;
     }
@@ -44,7 +51,7 @@
     .details[hidden] { display: none; }
   </style>
 
-  <!-- Preload first hero video to reduce flash -->
+  <!-- Preload first hero to reduce initial flash -->
   <link rel="preload" as="video" href="./hero1.mp4">
 </head>
 <body class="bg-neutral-50 text-neutral-900">
@@ -78,15 +85,15 @@
         <video src="./hero1.mp4" autoplay muted loop playsinline preload="auto"></video>
       </div>
       <div id="hero2" class="hero-slide">
-        <video src="./hero2.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        <video src="./hero2.mp4" autoplay muted loop playsinline preload="auto"></video>
       </div>
       <div id="hero3" class="hero-slide">
-        <video src="./hero3.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        <video src="./hero3.mp4" autoplay muted loop playsinline preload="auto"></video>
       </div>
     </div>
 
     <!-- Text overlay -->
-    <div class="relative z-20 container mx-auto px-4 py-20 md:py-28 grid md:grid-cols-2 gap-10 items-center">
+    <div class="relative z-30 container mx-auto px-4 py-20 md:py-28 grid md:grid-cols-2 gap-10 items-center">
       <div>
         <span class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/20 backdrop-blur px-3 py-1 text-xs font-medium text-white">
           Professional • Transparent • Nationwide
@@ -95,7 +102,7 @@
           Land & Home Acquisitions — Clear Terms. Reliable Closings.
         </h1>
         <p class="mt-4 text-white/90 text-base md:text-lg max-w-xl">
-          We evaluate land and residential properties quickly and professionally. Share your address and contact info—our team will review and follow up with next steps.
+          We evaluate land and residential properties quickly and professionally. Share your address and contact info; our team will review and follow up with next steps.
         </p>
         <div class="mt-6 flex flex-wrap items-center gap-3">
           <a href="#evaluate" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 bg-white text-sky-800 hover:bg-neutral-100">
@@ -337,12 +344,33 @@
   </footer>
 
   <script>
-    // Crossfade rotation for hero videos
+    /* --------------------------
+       HERO crossfade (all videos play; only wrappers fade)
+    ---------------------------*/
     const slides = [
       document.getElementById('hero1'),
       document.getElementById('hero2'),
       document.getElementById('hero3')
     ];
+    const vids = Array.from(document.querySelectorAll('.hero-slide video'));
+
+    // Stagger start times a bit so crossfades don't show same frame
+    vids.forEach((v, idx) => {
+      const onMeta = () => {
+        try {
+          if (Number.isFinite(v.duration) && v.duration > 5) {
+            const offset = (idx * 2) % Math.max(1, (v.duration - 1));
+            v.currentTime = offset;
+          }
+        } catch(e) {}
+        const p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      };
+      if (v.readyState >= 1) onMeta();
+      else v.addEventListener('loadedmetadata', onMeta, { once: true });
+    });
+
+    // Crossfade timer
     let i = 0;
     setInterval(() => {
       const current = slides[i];
@@ -350,27 +378,17 @@
       const next = slides[i];
       current.classList.remove('active');
       next.classList.add('active');
-    }, 6000);
+    }, 7000);
 
-    // Keep only the active video playing
-    const heroVideos = Array.from(document.querySelectorAll('.hero-slide video'));
-    function setPlayback(paused) {
-      heroVideos.forEach(v => {
-        if (paused) { if (!v.paused) v.pause(); }
-        else {
-          const parent = v.closest('.hero-slide');
-          if (parent && parent.classList.contains('active')) {
-            const p = v.play(); if (p && typeof p.catch === 'function') p.catch(() => {});
-          } else { if (!v.paused) v.pause(); }
-        }
-      });
-    }
-    document.addEventListener('DOMContentLoaded', () => setPlayback(false));
-    document.addEventListener('visibilitychange', () => document.hidden ? setPlayback(true) : setPlayback(false));
-    const obs = new MutationObserver(() => setPlayback(false));
-    document.querySelectorAll('.hero-slide').forEach(el => obs.observe(el, { attributes: true, attributeFilter: ['class'] }));
+    // Pause/resume when tab hidden/visible
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) vids.forEach(v => v.pause());
+      else vids.forEach(v => v.play().catch(() => {}));
+    });
 
-    // Reveal on scroll (IntersectionObserver for performance)
+    /* --------------------------
+       Reveal-on-scroll
+    ---------------------------*/
     const revealer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('reveal-in');
@@ -378,12 +396,46 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => revealer.observe(el));
 
-    // Formspree submission (replace "yourFormID" with your real Form ID)
+    /* --------------------------
+       Form submit: Formspree (fallback to mailto)
+       Replace YOUR_FORM_ID below, e.g. "xyzzabcd"
+    ---------------------------*/
+    const FORMSPREE_ID = "YOUR_FORM_ID"; // <-- put your Formspree form ID here
+    const FORMSPREE_URL = FORMSPREE_ID && FORMSPREE_ID !== "YOUR_FORM_ID"
+      ? `https://formspree.io/f/${FORMSPREE_ID}`
+      : null;
+
     document.getElementById('evaluationForm').addEventListener('submit', async function(e){
       e.preventDefault();
       const data = new FormData(e.target);
+
+      // If no Formspree ID, use mailto fallback
+      if (!FORMSPREE_URL) {
+        const subject = encodeURIComponent('Property Evaluation Request — VistaOne Properties');
+        const body = encodeURIComponent([
+          `Name: ${data.get('name')}`,
+          `Phone: ${data.get('phone')}`,
+          `Email: ${data.get('email') || 'N/A'}`,
+          `Address: ${data.get('address')}`,
+          `Type: ${data.get('type') || 'N/A'}`,
+          `Size: ${data.get('size') || 'N/A'}`,
+          `Price Expectation: ${data.get('price') || 'N/A'}`,
+          `Road Access: ${data.get('road_access') || 'N/A'}`,
+          `Electric: ${data.get('electric') || 'N/A'}`,
+          `Water: ${data.get('water') || 'N/A'}`,
+          `Sewer: ${data.get('sewer') || 'N/A'}`,
+          `Flood: ${data.get('flood') || 'N/A'}`,
+          `APN: ${data.get('apn') || 'N/A'}`,
+          `Callback only: ${data.get('callback_only') ? 'Yes' : 'No'}`,
+          '',
+          `Notes: ${data.get('notes') || 'N/A'}`
+        ].join('\n'));
+        window.location.href = `mailto:hello@vistaoneproperties.com?subject=${subject}&body=${body}`;
+        return;
+      }
+
       try {
-        const res = await fetch("https://formspree.io/f/yourFormID", {
+        const res = await fetch(FORMSPREE_URL, {
           method: "POST",
           headers: { "Accept": "application/json" },
           body: data
