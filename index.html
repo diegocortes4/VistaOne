@@ -4,16 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VistaOne Properties – Land & Home Acquisitions</title>
-  <meta name="description" content="VistaOne Properties partners with builders, investors, and property owners to acquire land and homes. Professional underwriting, clear criteria, efficient closings." />
+  <meta name="description" content="VistaOne partners with owners, builders, and investors to evaluate and acquire land and homes nationwide. Clear criteria, professional communication, reliable closings." />
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     .container { max-width: 1200px; }
-    .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms ease; }
-    .hero-slide.active { opacity: 1; }
+
+    /* HERO crossfade effect */
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+    }
+    .hero-slide.active { opacity: 1; z-index: 2; }
+    .hero-slide:not(.active) { z-index: 1; }
+
+    .hero-slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Hide details content when closed (for older browsers) */
+    .details[hidden] { display: none; }
   </style>
 
-  <!-- Preload first hero to reduce flash -->
-  <link rel="preload" as="image" href="./assets/hero1.jpg">
+  <!-- Preload first hero video to reduce flash -->
+  <link rel="preload" as="video" href="./hero1.mp4">
 </head>
 <body class="bg-neutral-50 text-neutral-900">
 
@@ -29,7 +47,8 @@
       <nav class="hidden md:flex items-center gap-6 text-sm">
         <a href="#services" class="hover:text-sky-700">Services</a>
         <a href="#criteria" class="hover:text-sky-700">Buy Box</a>
-        <a href="#sell" class="hover:text-sky-700">Submit Land</a>
+        <a href="#why-us" class="hover:text-sky-700">Why Us</a>
+        <a href="#evaluate" class="hover:text-sky-700">Start Evaluation</a>
         <a href="#about" class="hover:text-sky-700">About</a>
         <a href="#faq" class="hover:text-sky-700">FAQ</a>
         <a href="#contact" class="hover:text-sky-700">Contact</a>
@@ -38,165 +57,200 @@
     </div>
   </header>
 
-  <!-- HERO (Rotating: aerial mansions + land) -->
+  <!-- HERO (crossfading aerial videos) -->
   <section class="relative overflow-hidden h-[450px] md:h-[600px]">
     <div class="absolute inset-0">
-      <!-- Mansion estate aerial -->
       <div id="hero1" class="hero-slide active">
-        <img src="./assets/hero1.jpg"
-             alt="Aerial view of luxury estate with pool and landscaped grounds"
-             class="w-full h-full object-cover" loading="eager"
-             onerror="this.onerror=null;this.src='./assets/hero2.jpg';" />
+        <video src="./hero1.mp4" autoplay muted loop playsinline preload="auto"></video>
       </div>
-      <!-- Mansion surrounded by acreage -->
       <div id="hero2" class="hero-slide">
-        <img src="./assets/hero2.jpg"
-             alt="Drone view of modern mansion and surrounding land"
-             class="w-full h-full object-cover" loading="lazy"
-             onerror="this.onerror=null;this.src='./assets/hero3.jpg';" />
+        <video src="./hero2.mp4" autoplay muted loop playsinline preload="metadata"></video>
       </div>
-      <!-- Neighborhood + open land / plots -->
       <div id="hero3" class="hero-slide">
-        <img src="./assets/hero3.jpg"
-             alt="Aerial neighborhood next to open land and parcels"
-             class="w-full h-full object-cover" loading="lazy"
-             onerror="this.onerror=null;this.src='./assets/hero1.jpg';" />
+        <video src="./hero3.mp4" autoplay muted loop playsinline preload="metadata"></video>
       </div>
-      <!-- Dark overlay for legible text -->
       <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/10"></div>
     </div>
 
     <div class="relative container mx-auto px-4 py-20 md:py-28 grid md:grid-cols-2 gap-10 items-center">
       <div>
-        <span class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/20 backdrop-blur px-3 py-1 text-xs font-medium text-white">Professional Acquisitions • Bilingual • Investor-Friendly</span>
-        <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">Land & Home Acquisitions – Data-Driven, On-Time, On-Terms.</h1>
-        <p class="mt-4 text-white/90 text-base md:text-lg max-w-xl">We source, underwrite, and acquire lots and residential assets to defined criteria—utilities, zoning, flood, access, comps. Submit your parcel or request inventory.</p>
+        <span class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/20 backdrop-blur px-3 py-1 text-xs font-medium text-white">Professional • Transparent • Nationwide</span>
+        <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">
+          Land & Home Acquisitions — Clear Terms. Reliable Closings.
+        </h1>
+        <p class="mt-4 text-white/90 text-base md:text-lg max-w-xl">
+          We evaluate land and residential properties quickly and professionally. Share your address and contact info—our team will review and follow up with next steps.
+        </p>
         <div class="mt-6 flex flex-wrap items-center gap-3">
-          <a href="#sell" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 bg-white text-sky-800 hover:bg-neutral-100">Submit Land</a>
+          <a href="#evaluate" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 bg-white text-sky-800 hover:bg-neutral-100">Start Evaluation</a>
           <a href="#services" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 border border-white/60 bg-white/10 text-white hover:bg-white/20">What We Do</a>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- 3-step strip (owner-friendly) -->
+  <section class="container mx-auto px-4 py-10">
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="rounded-2xl bg-white border border-neutral-200 p-5">
+        <div class="text-sky-700 font-semibold">1) Share basics</div>
+        <p class="text-neutral-700 mt-1 text-sm">Tell us the address and how to reach you. That’s enough to start.</p>
+      </div>
+      <div class="rounded-2xl bg-white border border-neutral-200 p-5">
+        <div class="text-sky-700 font-semibold">2) Quick review</div>
+        <p class="text-neutral-700 mt-1 text-sm">We check utilities, access, zoning, and market comparables.</p>
+      </div>
+      <div class="rounded-2xl bg-white border border-neutral-200 p-5">
+        <div class="text-sky-700 font-semibold">3) Clear next steps</div>
+        <p class="text-neutral-700 mt-1 text-sm">If it fits, we outline terms and timing—straightforward and transparent.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- SERVICES -->
-  <section id="services" class="container mx-auto px-4 py-16">
+  <section id="services" class="container mx-auto px-4 py-12">
     <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">What We Do</h2>
-    <p class="mt-3 text-neutral-700 max-w-2xl">We identify and acquire prime land and residential assets meeting strict criteria for development, investment, or strategic holds—then move them efficiently through title to a clean close.</p>
+    <p class="mt-3 text-neutral-700 max-w-2xl">
+      We evaluate and acquire land and residential properties against clear criteria—then coordinate a smooth, on-time close. Our approach is professional, owner-friendly, and data-driven.
+    </p>
     <div class="mt-8 grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
         <h3 class="font-semibold text-sky-800">Targeted Land Sourcing</h3>
-        <p class="mt-2 text-sm text-neutral-700">Lots and tracts filtered by utilities, zoning, flood, access, and pricing. MLS + off-market channels.</p>
+        <p class="mt-2 text-sm text-neutral-700">Utilities, access, flood, and zoning reviewed. On- and off-market opportunities.</p>
       </div>
       <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
         <h3 class="font-semibold text-sky-800">Residential Acquisitions</h3>
-        <p class="mt-2 text-sm text-neutral-700">SFRs meeting DOM/ARV/comps criteria, assignment-friendly when appropriate.</p>
+        <p class="mt-2 text-sm text-neutral-700">Single-family homes meeting defined criteria and neighborhood fit.</p>
       </div>
       <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-        <h3 class="font-semibold text-sky-800">Dispositions & Title</h3>
-        <p class="mt-2 text-sm text-neutral-700">Placement to vetted buyers; HUD/ALTA review; reliable, on-time closings.</p>
+        <h3 class="font-semibold text-sky-800">Title & Closing Support</h3>
+        <p class="mt-2 text-sm text-neutral-700">Coordinated title review and communication for a predictable closing.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why-us" class="bg-gradient-to-br from-sky-50 to-emerald-50 border-y border-sky-100">
+    <div class="container mx-auto px-4 py-16 text-center">
+      <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">Why Partner with VistaOne?</h2>
+      <p class="mt-4 text-lg text-neutral-700 max-w-3xl mx-auto">Owner-first communication, objective analysis, and efficient execution—across the United States.</p>
+      <div class="mt-10 grid md:grid-cols-3 gap-8 text-left">
+        <div class="rounded-2xl bg-white p-6 shadow-md border border-neutral-100">
+          <h3 class="font-semibold text-xl text-sky-800">Professional & Transparent</h3>
+          <p class="mt-2 text-neutral-700 text-sm">Clear expectations, timelines, and consistent updates—no pressure tactics.</p>
+        </div>
+        <div class="rounded-2xl bg-white p-6 shadow-md border border-neutral-100">
+          <h3 class="font-semibold text-xl text-sky-800">Data-Driven Review</h3>
+          <p class="mt-2 text-neutral-700 text-sm">Utilities, zoning, access, and local comparables inform every decision.</p>
+        </div>
+        <div class="rounded-2xl bg-white p-6 shadow-md border border-neutral-100">
+          <h3 class="font-semibold text-xl text-sky-800">Reliable Closings</h3>
+          <p class="mt-2 text-neutral-700 text-sm">Coordinated title, straightforward terms, and predictable execution.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- BUY BOX -->
-  <section id="criteria" class="bg-sky-50 border-y border-sky-100">
+  <section id="criteria" class="bg-white">
     <div class="container mx-auto px-4 py-16">
       <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">Acquisition Criteria (Buy Box)</h2>
       <ul class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-neutral-800">
-        <li class="rounded-xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><strong>Lot size:</strong> 0.20–0.35 ac typical (10–15k sf); larger tracts welcome.</li>
-        <li class="rounded-xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><strong>Access:</strong> Paved or reliable graded roads; recorded easements preferred.</li>
-        <li class="rounded-xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><strong>Utilities:</strong> Electric at street preferred; city/well water & city/septic considered.</li>
-        <li class="rounded-xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><strong>Environmental:</strong> Limited/mitigable flood or wetlands; FEMA/USFWS reviewed.</li>
-        <li class="rounded-xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><strong>Zoning & comps:</strong> SFR-compatible, strong comps and price velocity.</li>
-        <li class="rounded-xl border border-sky-100 bg-white px-4 py-3 shadow-sm"><strong>Title & HOA:</strong> Clean title; workable restrictions/dues.</li>
+        <li class="rounded-xl border border-sky-100 bg-neutral-50 px-4 py-3 shadow-sm"><strong>Lot size:</strong> 0.20–0.35 ac typical (10–15k sf); larger tracts welcome.</li>
+        <li class="rounded-xl border border-sky-100 bg-neutral-50 px-4 py-3 shadow-sm"><strong>Access:</strong> Paved or reliable graded roads; recorded easements preferred.</li>
+        <li class="rounded-xl border border-sky-100 bg-neutral-50 px-4 py-3 shadow-sm"><strong>Utilities:</strong> Electric at street preferred; city/well water & city/septic considered.</li>
+        <li class="rounded-xl border border-sky-100 bg-neutral-50 px-4 py-3 shadow-sm"><strong>Environmental:</strong> Limited/mitigable flood or wetlands reviewed with FEMA/state data.</li>
+        <li class="rounded-xl border border-sky-100 bg-neutral-50 px-4 py-3 shadow-sm"><strong>Zoning & comps:</strong> SFR-compatible, market fit and comparables.</li>
+        <li class="rounded-xl border border-sky-100 bg-neutral-50 px-4 py-3 shadow-sm"><strong>Title:</strong> Clean, insurable title required.</li>
       </ul>
     </div>
   </section>
 
-  <!-- SUBMIT LAND -->
-  <section id="sell" class="container mx-auto px-4 py-16">
-    <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">Submit Your Land or Property</h2>
-    <p class="mt-2 text-neutral-700 max-w-2xl">Share the details below. We’ll evaluate utilities, access, zoning, flood, and market fit. If aligned, we’ll follow up with next steps.</p>
-    <form id="landForm" class="mt-8 grid gap-4 bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm">
-      <div class="grid md:grid-cols-2 gap-4">
-        <input type="text" name="name" placeholder="Full Name" class="rounded-xl border border-neutral-300 px-3 py-2" required />
-        <input type="email" name="email" placeholder="Email" class="rounded-xl border border-neutral-300 px-3 py-2" required />
-      </div>
-      <div class="grid md:grid-cols-2 gap-4">
-        <input type="tel" name="phone" placeholder="Phone Number" class="rounded-xl border border-neutral-300 px-3 py-2" />
-        <input type="text" name="apn" placeholder="APN / Parcel ID (if known)" class="rounded-xl border border-neutral-300 px-3 py-2" />
-      </div>
-      <input type="text" name="address" placeholder="Property Address • City • County • State" class="rounded-xl border border-neutral-300 px-3 py-2" required />
-      <div class="grid md:grid-cols-3 gap-4">
-        <input type="text" name="lot_size" placeholder="Lot Size (e.g., 0.25 ac / 10,890 sf)" class="rounded-xl border border-neutral-300 px-3 py-2" />
-        <select name="road_access" class="rounded-xl border border-neutral-300 px-3 py-2">
-          <option value="" disabled selected>Road Access</option>
-          <option>Paved</option><option>Gravel/Graded</option><option>Easement Only</option><option>Unknown</option>
-        </select>
-        <select name="topography" class="rounded-xl border border-neutral-300 px-3 py-2">
-          <option value="" disabled selected>Topography</option>
-          <option>Flat</option><option>Gentle Slope</option><option>Hilly</option><option>Mixed</option>
-        </select>
-      </div>
-      <div class="grid md:grid-cols-3 gap-4">
-        <select name="electric" class="rounded-xl border border-neutral-300 px-3 py-2">
-          <option value="" disabled selected>Electric</option>
-          <option>At Street</option><option>Nearby</option><option>Unknown</option>
-        </select>
-        <select name="water" class="rounded-xl border border-neutral-300 px-3 py-2">
-          <option value="" disabled selected>Water</option>
-          <option>City</option><option>Well</option><option>Unknown</option>
-        </select>
-        <select name="sewer" class="rounded-xl border border-neutral-300 px-3 py-2">
-          <option value="" disabled selected>Sewer</option>
-          <option>City</option><option>Septic</option><option>Unknown</option>
-        </select>
-      </div>
-      <div class="grid md:grid-cols-3 gap-4">
-        <select name="flood" class="rounded-xl border border-neutral-300 px-3 py-2">
-          <option value="" disabled selected>Flood Zone</option>
-          <option>None/Minimal</option><option>Partial</option><option>Significant</option><option>Unknown</option>
-        </select>
-        <select name="wetlands" class="rounded-xl border border-neutral-300 px-3 py-2">
-          <option value="" disabled selected>Wetlands</option>
-          <option>No</option><option>Some</option><option>Unknown</option>
-        </select>
-        <input type="text" name="zoning" placeholder="Zoning (if known)" class="rounded-xl border border-neutral-300 px-3 py-2" />
-      </div>
-      <div class="grid md:grid-cols-3 gap-4">
-        <input type="text" name="hoa" placeholder="HOA/POA? (name/dues if any)" class="rounded-xl border border-neutral-300 px-3 py-2" />
-        <input type="text" name="price" placeholder="Desired Price (USD)" class="rounded-xl border border-neutral-300 px-3 py-2" />
-        <select name="timeline" class="rounded-xl border border-neutral-300 px-3 py-2">
-          <option value="" disabled selected>Timeline</option>
-          <option>ASAP</option><option>30–45 days</option><option>60+ days</option><option>Exploring options</option>
-        </select>
-      </div>
-      <textarea name="notes" rows="5" placeholder="Anything else we should know (surveys, perc tests, title items, access notes)?" class="rounded-xl border border-neutral-300 px-3 py-2"></textarea>
-      <button type="submit" class="inline-flex items-center justify-center rounded-2xl px-4 py-2.5 bg-sky-700 text-white hover:bg-sky-800">Submit Property Details</button>
-      <p class="text-xs text-neutral-500 text-center">By submitting, you agree to be contacted by VistaOne Properties. We respect your privacy and never share your information.</p>
-    </form>
+  <!-- START EVALUATION (Simplified form) -->
+  <section id="evaluate" class="container mx-auto px-4 py-16">
+    <div class="rounded-2xl border border-neutral-200 bg-white p-6 md:p-8 shadow-sm">
+      <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">Start an Evaluation</h2>
+      <p class="mt-2 text-neutral-700 max-w-2xl">Three quick fields to begin. Add details if you’d like—totally optional.</p>
+
+      <form id="evaluationForm" class="mt-8 grid gap-4">
+        <!-- Essentials -->
+        <div class="grid md:grid-cols-2 gap-4">
+          <input type="text" name="name" placeholder="Your Name" class="rounded-xl border border-neutral-300 px-3 py-2" required />
+          <input type="tel" name="phone" placeholder="Phone (best number)" class="rounded-xl border border-neutral-300 px-3 py-2" required />
+        </div>
+        <input type="text" name="address" placeholder="Property Address • City • State" class="rounded-xl border border-neutral-300 px-3 py-2" required />
+        <input type="email" name="email" placeholder="Email (optional)" class="rounded-xl border border-neutral-300 px-3 py-2" />
+
+        <!-- Optional quick picks -->
+        <details class="rounded-xl border border-neutral-200 p-4 bg-neutral-50 mt-2">
+          <summary class="cursor-pointer select-none text-sm text-neutral-700">Add helpful details (optional)</summary>
+          <div class="mt-3 grid md:grid-cols-3 gap-4">
+            <select name="type" class="rounded-xl border border-neutral-300 px-3 py-2">
+              <option value="" selected>Property Type</option>
+              <option>Land</option><option>Single-Family Home</option><option>Other</option>
+            </select>
+            <input type="text" name="size" placeholder="Lot/Home Size" class="rounded-xl border border-neutral-300 px-3 py-2" />
+            <input type="text" name="price" placeholder="Price Expectation" class="rounded-xl border border-neutral-300 px-3 py-2" />
+            <select name="road_access" class="rounded-xl border border-neutral-300 px-3 py-2">
+              <option value="" selected>Road Access</option>
+              <option>Paved</option><option>Gravel/Graded</option><option>Easement Only</option><option>Unknown</option>
+            </select>
+            <select name="electric" class="rounded-xl border border-neutral-300 px-3 py-2">
+              <option value="" selected>Electric</option>
+              <option>At Street</option><option>Nearby</option><option>Unknown</option>
+            </select>
+            <select name="water" class="rounded-xl border border-neutral-300 px-3 py-2">
+              <option value="" selected>Water</option>
+              <option>City</option><option>Well</option><option>Unknown</option>
+            </select>
+            <select name="sewer" class="rounded-xl border border-neutral-300 px-3 py-2">
+              <option value="" selected>Sewer</option>
+              <option>City</option><option>Septic</option><option>Unknown</option>
+            </select>
+            <select name="flood" class="rounded-xl border border-neutral-300 px-3 py-2">
+              <option value="" selected>Flood Zone</option>
+              <option>None/Minimal</option><option>Partial</option><option>Significant</option><option>Unknown</option>
+            </select>
+            <input type="text" name="apn" placeholder="APN/Parcel ID (if known)" class="rounded-xl border border-neutral-300 px-3 py-2" />
+          </div>
+          <textarea name="notes" rows="4" placeholder="Anything else you'd like us to know?" class="rounded-xl border border-neutral-300 px-3 py-2 mt-4"></textarea>
+        </details>
+
+        <label class="flex items-center gap-2 text-sm text-neutral-700 mt-2">
+          <input type="checkbox" name="callback_only" class="h-4 w-4 rounded border-neutral-300" />
+          I’d prefer a quick callback first.
+        </label>
+
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+          <button type="submit" class="inline-flex items-center justify-center rounded-2xl px-4 py-2.5 bg-sky-700 text-white hover:bg-sky-800">Send</button>
+          <div class="text-xs text-neutral-500">By submitting, you agree to be contacted by VistaOne Properties. We respect your privacy.</div>
+        </div>
+      </form>
+    </div>
   </section>
 
-  <!-- ABOUT (condensed) -->
+  <!-- ABOUT -->
   <section id="about" class="bg-white border-t border-neutral-200">
     <div class="container mx-auto px-4 py-16 grid md:grid-cols-3 gap-8 items-start">
       <div class="md:col-span-2">
         <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">About VistaOne Properties</h2>
-        <p class="mt-3 text-neutral-700">VistaOne is an acquisitions partner for builders, investors, and owners. We combine on-the-ground knowledge with data-driven underwriting to identify viable parcels and residential assets, then manage negotiations and title through close.</p>
+        <p class="mt-3 text-neutral-700">
+          VistaOne is a professional acquisitions group partnering with property owners, builders, and investors nationwide.
+          We combine local knowledge with objective analysis to make clear, fair decisions and manage predictable closings.
+        </p>
         <ul class="mt-6 grid sm:grid-cols-2 gap-3 text-sm">
           <li class="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2">Responsive, bilingual team</li>
-          <li class="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2">Assignment-friendly contracts</li>
-          <li class="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2">Builder & investor relationships</li>
-          <li class="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2">Title oversight (HUD/ALTA)</li>
+          <li class="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2">Transparent terms and timelines</li>
+          <li class="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2">Market-informed underwriting</li>
+          <li class="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2">Coordinated title and closing</li>
         </ul>
       </div>
       <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
         <h3 class="font-semibold text-sky-800">Recent Highlights</h3>
         <ul class="mt-3 space-y-2 text-sm text-neutral-700">
-          <li>7 parcels placed with builder in 14 days (FL)</li>
-          <li>Lot underwriting &lt; 48h average</li>
-          <li>Buyer list 300+ verified contacts</li>
+          <li>Underwriting turnaround typically within 24–48 hours</li>
+          <li>Multiple successful placements with reputable builders</li>
+          <li>Growing coverage across high-growth U.S. markets</li>
         </ul>
       </div>
     </div>
@@ -207,10 +261,22 @@
     <div class="container mx-auto px-4 py-16">
       <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">FAQs</h2>
       <div class="mt-6 grid md:grid-cols-2 gap-6 text-sm text-neutral-800">
-        <div class="rounded-2xl border border-sky-100 bg-white p-5"><div class="font-semibold">How fast can you evaluate?</div><p class="mt-2">Usually within 24–48 hours after we receive APN/address and basic utility/access info.</p></div>
-        <div class="rounded-2xl border border-sky-100 bg-white p-5"><div class="font-semibold">Do you buy homes too?</div><p class="mt-2">Yes—SFRs that meet our buy box. We can also place assignments via our buyer network.</p></div>
-        <div class="rounded-2xl border border-sky-100 bg-white p-5"><div class="font-semibold">Are you a brokerage?</div><p class="mt-2">We operate as a private acquisitions company and may partner with licensed agents when appropriate.</p></div>
-        <div class="rounded-2xl border border-sky-100 bg-white p-5"><div class="font-semibold">What about flood/wetlands?</div><p class="mt-2">We review FEMA/state data. Mitigable scenarios may still qualify depending on access/comps.</p></div>
+        <div class="rounded-2xl border border-sky-100 bg-white p-5">
+          <div class="font-semibold">How fast can you evaluate?</div>
+          <p class="mt-2">Usually within 24–48 hours after we receive your address and contact info.</p>
+        </div>
+        <div class="rounded-2xl border border-sky-100 bg-white p-5">
+          <div class="font-semibold">Do you consider homes as well as land?</div>
+          <p class="mt-2">Yes. We actively evaluate single-family homes and land, nationwide.</p>
+        </div>
+        <div class="rounded-2xl border border-sky-100 bg-white p-5">
+          <div class="font-semibold">How do you operate?</div>
+          <p class="mt-2">We’re a private acquisitions company. We evaluate each property against clear criteria and coordinate title for a predictable closing. When helpful, we collaborate with licensed professionals.</p>
+        </div>
+        <div class="rounded-2xl border border-sky-100 bg-white p-5">
+          <div class="font-semibold">What if there’s flood or wetlands?</div>
+          <p class="mt-2">We review FEMA/state data and overall feasibility. Many properties still qualify with the right factors.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -218,7 +284,7 @@
   <!-- CONTACT -->
   <section id="contact" class="container mx-auto px-4 py-16">
     <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">Connect with VistaOne</h2>
-    <p class="mt-2 text-neutral-700 max-w-2xl">Partnerships, acquisitions, or questions—reach us anytime.</p>
+    <p class="mt-2 text-neutral-700 max-w-2xl">Questions or opportunities—reach out anytime.</p>
     <div class="mt-8">
       <a href="mailto:hello@vistaoneproperties.com" class="text-sky-700 underline">hello@vistaoneproperties.com</a>
       <p>Phone: <a href="tel:+13055550134" class="text-sky-700 underline">+1 (305) 555-0134</a></p>
@@ -231,14 +297,15 @@
       <div>
         <div class="font-semibold text-sky-900">VistaOne Properties</div>
         <div class="mt-1">Vision for Land and Home.</div>
-        <div class="mt-4 text-xs">Serving Florida & the Southeast U.S.</div>
+        <div class="mt-4 text-xs">Serving clients across the United States.</div>
       </div>
       <div>
         <div class="font-semibold text-sky-900 mb-2">Quick Links</div>
         <ul class="space-y-1">
           <li><a href="#services" class="hover:text-sky-700">Our Services</a></li>
           <li><a href="#criteria" class="hover:text-sky-700">Acquisition Criteria</a></li>
-          <li><a href="#sell" class="hover:text-sky-700">Submit Property</a></li>
+          <li><a href="#why-us" class="hover:text-sky-700">Why Partner with Us</a></li>
+          <li><a href="#evaluate" class="hover:text-sky-700">Start Evaluation</a></li>
           <li><a href="#about" class="hover:text-sky-700">About Us</a></li>
         </ul>
       </div>
@@ -250,38 +317,59 @@
   </footer>
 
   <script>
-    // Simple auto-rotating hero slider
-    const slides = [document.getElementById('hero1'), document.getElementById('hero2'), document.getElementById('hero3')];
+    // Crossfade rotation for hero videos
+    const slides = [
+      document.getElementById('hero1'),
+      document.getElementById('hero2'),
+      document.getElementById('hero3')
+    ];
     let i = 0;
     setInterval(() => {
-      slides[i].classList.remove('active');
+      const current = slides[i];
       i = (i + 1) % slides.length;
-      slides[i].classList.add('active');
-    }, 5000);
+      const next = slides[i];
+      current.classList.remove('active');
+      next.classList.add('active');
+    }, 6000);
 
-    // Mailto handler (swap to Formspree/Netlify Forms later for production)
-    document.getElementById('landForm').addEventListener('submit', function(e){
+    // Pause/resume hero videos when the tab is hidden/visible
+    const heroVideos = Array.from(document.querySelectorAll('.hero-slide video'));
+    function setPlayback(paused) {
+      heroVideos.forEach(v => {
+        if (paused) { if (!v.paused) v.pause(); }
+        else {
+          const parent = v.closest('.hero-slide');
+          if (parent && parent.classList.contains('active')) {
+            const p = v.play(); if (p && typeof p.catch === 'function') p.catch(() => {});
+          } else { if (!v.paused) v.pause(); }
+        }
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => setPlayback(false));
+    document.addEventListener('visibilitychange', () => document.hidden ? setPlayback(true) : setPlayback(false));
+    const obs = new MutationObserver(() => setPlayback(false));
+    document.querySelectorAll('.hero-slide').forEach(el => obs.observe(el, { attributes: true, attributeFilter: ['class'] }));
+
+    // Email submission (swap to Formspree/Netlify Forms for production)
+    document.getElementById('evaluationForm').addEventListener('submit', function(e){
       e.preventDefault();
       const data = new FormData(e.target);
-      const subject = encodeURIComponent('Property Submission — VistaOne Properties');
+      const subject = encodeURIComponent('Property Evaluation Request — VistaOne Properties');
       const body = encodeURIComponent([
         `Name: ${data.get('name')}`,
-        `Email: ${data.get('email')}`,
-        `Phone: ${data.get('phone') || 'N/A'}`,
-        `APN: ${data.get('apn') || 'N/A'}`,
-        `Address: ${data.get('address') || 'N/A'}`,
-        `Lot Size: ${data.get('lot_size') || 'N/A'}`,
+        `Phone: ${data.get('phone')}`,
+        `Email: ${data.get('email') || 'N/A'}`,
+        `Address: ${data.get('address')}`,
+        `Type: ${data.get('type') || 'N/A'}`,
+        `Size: ${data.get('size') || 'N/A'}`,
+        `Price Expectation: ${data.get('price') || 'N/A'}`,
         `Road Access: ${data.get('road_access') || 'N/A'}`,
-        `Topography: ${data.get('topography') || 'N/A'}`,
         `Electric: ${data.get('electric') || 'N/A'}`,
         `Water: ${data.get('water') || 'N/A'}`,
         `Sewer: ${data.get('sewer') || 'N/A'}`,
         `Flood: ${data.get('flood') || 'N/A'}`,
-        `Wetlands: ${data.get('wetlands') || 'N/A'}`,
-        `Zoning: ${data.get('zoning') || 'N/A'}`,
-        `HOA: ${data.get('hoa') || 'N/A'}`,
-        `Desired Price: ${data.get('price') || 'N/A'}`,
-        `Timeline: ${data.get('timeline') || 'N/A'}`,
+        `APN: ${data.get('apn') || 'N/A'}`,
+        `Callback only: ${data.get('callback_only') ? 'Yes' : 'No'}`,
         '',
         `Notes: ${data.get('notes') || 'N/A'}`
       ].join('\n'));
