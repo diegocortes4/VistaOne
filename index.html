@@ -12,8 +12,8 @@
     .hero-slide.active { opacity: 1; }
   </style>
 
-  <!-- Optional: preloads to reduce image flash on first slide -->
-  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1512917774080-9991f618f77c?auto=format&fit=crop&w=2500&q=80">
+  <!-- Preload first hero to reduce flash -->
+  <link rel="preload" as="image" href="./assets/hero1.jpg">
 </head>
 <body class="bg-neutral-50 text-neutral-900">
 
@@ -43,21 +43,24 @@
     <div class="absolute inset-0">
       <!-- Mansion estate aerial -->
       <div id="hero1" class="hero-slide active">
-        <img src="https://images.unsplash.com/photo-1512917774080-9991f618f77c?auto=format&fit=crop&w=2500&q=80"
+        <img src="./assets/hero1.jpg"
              alt="Aerial view of luxury estate with pool and landscaped grounds"
-             class="w-full h-full object-cover" loading="eager" />
+             class="w-full h-full object-cover" loading="eager"
+             onerror="this.onerror=null;this.src='./assets/hero2.jpg';" />
       </div>
       <!-- Mansion surrounded by acreage -->
       <div id="hero2" class="hero-slide">
-        <img src="https://images.unsplash.com/photo-1570129477618-2e0691516e8b?auto=format&fit=crop&w=2500&q=80"
+        <img src="./assets/hero2.jpg"
              alt="Drone view of modern mansion and surrounding land"
-             class="w-full h-full object-cover" loading="lazy" />
+             class="w-full h-full object-cover" loading="lazy"
+             onerror="this.onerror=null;this.src='./assets/hero3.jpg';" />
       </div>
       <!-- Neighborhood + open land / plots -->
       <div id="hero3" class="hero-slide">
-        <img src="https://images.unsplash.com/photo-1549419163-efc7d79b9ac1?auto=format&fit=crop&w=2500&q=80"
+        <img src="./assets/hero3.jpg"
              alt="Aerial neighborhood next to open land and parcels"
-             class="w-full h-full object-cover" loading="lazy" />
+             class="w-full h-full object-cover" loading="lazy"
+             onerror="this.onerror=null;this.src='./assets/hero1.jpg';" />
       </div>
       <!-- Dark overlay for legible text -->
       <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/10"></div>
