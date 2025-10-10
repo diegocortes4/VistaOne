@@ -57,37 +57,46 @@
     </div>
   </header>
 
-  <!-- HERO (crossfading aerial videos) -->
-  <section class="relative overflow-hidden h-[450px] md:h-[600px]">
-    <div class="absolute inset-0">
-      <div id="hero1" class="hero-slide active">
-        <video src="./hero1.mp4" autoplay muted loop playsinline preload="auto"></video>
-      </div>
-      <div id="hero2" class="hero-slide">
-        <video src="./hero2.mp4" autoplay muted loop playsinline preload="metadata"></video>
-      </div>
-      <div id="hero3" class="hero-slide">
-        <video src="./hero3.mp4" autoplay muted loop playsinline preload="metadata"></video>
-      </div>
-      <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/10"></div>
+ <!-- HERO (crossfading aerial videos + overlay text) -->
+<section class="relative overflow-hidden h-[450px] md:h-[600px]">
+  <div class="absolute inset-0">
+    <div id="hero1" class="hero-slide active">
+      <video src="./hero1.mp4" autoplay muted loop playsinline preload="auto"></video>
     </div>
+    <div id="hero2" class="hero-slide">
+      <video src="./hero2.mp4" autoplay muted loop playsinline preload="metadata"></video>
+    </div>
+    <div id="hero3" class="hero-slide">
+      <video src="./hero3.mp4" autoplay muted loop playsinline preload="metadata"></video>
+    </div>
+    <!-- dark gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/10 z-10"></div>
+  </div>
 
-    <div class="relative container mx-auto px-4 py-20 md:py-28 grid md:grid-cols-2 gap-10 items-center">
-      <div>
-        <span class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/20 backdrop-blur px-3 py-1 text-xs font-medium text-white">Professional • Transparent • Nationwide</span>
-        <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">
-          Land & Home Acquisitions — Clear Terms. Reliable Closings.
-        </h1>
-        <p class="mt-4 text-white/90 text-base md:text-lg max-w-xl">
-          We evaluate land and residential properties quickly and professionally. Share your address and contact info—our team will review and follow up with next steps.
-        </p>
-        <div class="mt-6 flex flex-wrap items-center gap-3">
-          <a href="#evaluate" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 bg-white text-sky-800 hover:bg-neutral-100">Start Evaluation</a>
-          <a href="#services" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 border border-white/60 bg-white/10 text-white hover:bg-white/20">What We Do</a>
-        </div>
+  <!-- text overlay now ABOVE video -->
+  <div class="relative z-20 container mx-auto px-4 py-20 md:py-28 grid md:grid-cols-2 gap-10 items-center">
+    <div>
+      <span class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/20 backdrop-blur px-3 py-1 text-xs font-medium text-white">
+        Professional • Transparent • Nationwide
+      </span>
+      <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">
+        Land & Home Acquisitions — Clear Terms. Reliable Closings.
+      </h1>
+      <p class="mt-4 text-white/90 text-base md:text-lg max-w-xl">
+        We evaluate land and residential properties quickly and professionally. Share your address and contact info—our team will review and follow up with next steps.
+      </p>
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <a href="#evaluate" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 bg-white text-sky-800 hover:bg-neutral-100">
+          Start Evaluation
+        </a>
+        <a href="#services" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 border border-white/60 bg-white/10 text-white hover:bg-white/20">
+          What We Do
+        </a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- 3-step strip (owner-friendly) -->
   <section class="container mx-auto px-4 py-10">
