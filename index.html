@@ -10,23 +10,37 @@
   <style>
     .container { max-width: 1200px; }
 
-    /* HERO crossfade effect */
+    /* HERO crossfade + layering */
     .hero-slide {
       position: absolute;
       inset: 0;
       opacity: 0;
       transition: opacity 1.2s ease-in-out;
+      z-index: 1; /* base */
     }
     .hero-slide.active { opacity: 1; z-index: 2; }
-    .hero-slide:not(.active) { z-index: 1; }
-
     .hero-slide video {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+    /* Consistent readability: per-slide gradient (below text, above video) */
+    .hero-slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.25), rgba(0,0,0,0.10));
+      z-index: 3;
+      pointer-events: none;
+    }
 
-    /* Hide details content when closed (for older browsers) */
+    /* Reveal animations for sections */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.reveal-in { opacity: 1; transform: translateY(0); }
+
+    /* Hide <details> content when closed (older browsers) */
     .details[hidden] { display: none; }
   </style>
 
@@ -57,49 +71,46 @@
     </div>
   </header>
 
- <!-- HERO (crossfading aerial videos + overlay text) -->
-<section class="relative overflow-hidden h-[450px] md:h-[600px]">
-  <div class="absolute inset-0">
-    <div id="hero1" class="hero-slide active">
-      <video src="./hero1.mp4" autoplay muted loop playsinline preload="auto"></video>
-    </div>
-    <div id="hero2" class="hero-slide">
-      <video src="./hero2.mp4" autoplay muted loop playsinline preload="metadata"></video>
-    </div>
-    <div id="hero3" class="hero-slide">
-      <video src="./hero3.mp4" autoplay muted loop playsinline preload="metadata"></video>
-    </div>
-    <!-- dark gradient overlay -->
-    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/10 z-10"></div>
-  </div>
-
-  <!-- text overlay now ABOVE video -->
-  <div class="relative z-20 container mx-auto px-4 py-20 md:py-28 grid md:grid-cols-2 gap-10 items-center">
-    <div>
-      <span class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/20 backdrop-blur px-3 py-1 text-xs font-medium text-white">
-        Professional • Transparent • Nationwide
-      </span>
-      <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">
-        Land & Home Acquisitions — Clear Terms. Reliable Closings.
-      </h1>
-      <p class="mt-4 text-white/90 text-base md:text-lg max-w-xl">
-        We evaluate land and residential properties quickly and professionally. Share your address and contact info; our team will review and follow up with next steps.
-      </p>
-      <div class="mt-6 flex flex-wrap items-center gap-3">
-        <a href="#evaluate" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 bg-white text-sky-800 hover:bg-neutral-100">
-          Start Evaluation
-        </a>
-        <a href="#services" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 border border-white/60 bg-white/10 text-white hover:bg-white/20">
-          What We Do
-        </a>
+  <!-- HERO (crossfading aerial videos + overlay text) -->
+  <section class="relative overflow-hidden h-[450px] md:h-[600px]">
+    <div class="absolute inset-0">
+      <div id="hero1" class="hero-slide active">
+        <video src="./hero1.mp4" autoplay muted loop playsinline preload="auto"></video>
+      </div>
+      <div id="hero2" class="hero-slide">
+        <video src="./hero2.mp4" autoplay muted loop playsinline preload="metadata"></video>
+      </div>
+      <div id="hero3" class="hero-slide">
+        <video src="./hero3.mp4" autoplay muted loop playsinline preload="metadata"></video>
       </div>
     </div>
-  </div>
-</section>
 
+    <!-- Text overlay -->
+    <div class="relative z-20 container mx-auto px-4 py-20 md:py-28 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/20 backdrop-blur px-3 py-1 text-xs font-medium text-white">
+          Professional • Transparent • Nationwide
+        </span>
+        <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight tracking-tight text-white">
+          Land & Home Acquisitions — Clear Terms. Reliable Closings.
+        </h1>
+        <p class="mt-4 text-white/90 text-base md:text-lg max-w-xl">
+          We evaluate land and residential properties quickly and professionally. Share your address and contact info—our team will review and follow up with next steps.
+        </p>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <a href="#evaluate" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 bg-white text-sky-800 hover:bg-neutral-100">
+            Start Evaluation
+          </a>
+          <a href="#services" class="inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 border border-white/60 bg-white/10 text-white hover:bg-white/20">
+            What We Do
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- 3-step strip (owner-friendly) -->
-  <section class="container mx-auto px-4 py-10">
+  <section class="container mx-auto px-4 py-10 reveal">
     <div class="grid md:grid-cols-3 gap-5">
       <div class="rounded-2xl bg-white border border-neutral-200 p-5">
         <div class="text-sky-700 font-semibold">1) Share basics</div>
@@ -117,7 +128,7 @@
   </section>
 
   <!-- SERVICES -->
-  <section id="services" class="container mx-auto px-4 py-12">
+  <section id="services" class="container mx-auto px-4 py-12 reveal">
     <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">What We Do</h2>
     <p class="mt-3 text-neutral-700 max-w-2xl">
       We evaluate and acquire land and residential properties against clear criteria—then coordinate a smooth, on-time close. Our approach is professional, owner-friendly, and data-driven.
@@ -139,7 +150,7 @@
   </section>
 
   <!-- WHY US -->
-  <section id="why-us" class="bg-gradient-to-br from-sky-50 to-emerald-50 border-y border-sky-100">
+  <section id="why-us" class="bg-gradient-to-br from-sky-50 to-emerald-50 border-y border-sky-100 reveal">
     <div class="container mx-auto px-4 py-16 text-center">
       <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">Why Partner with VistaOne?</h2>
       <p class="mt-4 text-lg text-neutral-700 max-w-3xl mx-auto">Owner-first communication, objective analysis, and efficient execution—across the United States.</p>
@@ -161,7 +172,7 @@
   </section>
 
   <!-- BUY BOX -->
-  <section id="criteria" class="bg-white">
+  <section id="criteria" class="bg-white reveal">
     <div class="container mx-auto px-4 py-16">
       <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">Acquisition Criteria (Buy Box)</h2>
       <ul class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-neutral-800">
@@ -176,7 +187,7 @@
   </section>
 
   <!-- START EVALUATION (Simplified form) -->
-  <section id="evaluate" class="container mx-auto px-4 py-16">
+  <section id="evaluate" class="container mx-auto px-4 py-16 reveal">
     <div class="rounded-2xl border border-neutral-200 bg-white p-6 md:p-8 shadow-sm">
       <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">Start an Evaluation</h2>
       <p class="mt-2 text-neutral-700 max-w-2xl">Three quick fields to begin. Add details if you’d like—totally optional.</p>
@@ -239,7 +250,7 @@
   </section>
 
   <!-- ABOUT -->
-  <section id="about" class="bg-white border-t border-neutral-200">
+  <section id="about" class="bg-white border-t border-neutral-200 reveal">
     <div class="container mx-auto px-4 py-16 grid md:grid-cols-3 gap-8 items-start">
       <div class="md:col-span-2">
         <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">About VistaOne Properties</h2>
@@ -266,7 +277,7 @@
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="bg-sky-50 border-y border-sky-100">
+  <section id="faq" class="bg-sky-50 border-y border-sky-100 reveal">
     <div class="container mx-auto px-4 py-16">
       <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">FAQs</h2>
       <div class="mt-6 grid md:grid-cols-2 gap-6 text-sm text-neutral-800">
@@ -291,7 +302,7 @@
   </section>
 
   <!-- CONTACT -->
-  <section id="contact" class="container mx-auto px-4 py-16">
+  <section id="contact" class="container mx-auto px-4 py-16 reveal">
     <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">Connect with VistaOne</h2>
     <p class="mt-2 text-neutral-700 max-w-2xl">Questions or opportunities—reach out anytime.</p>
     <div class="mt-8">
@@ -341,7 +352,7 @@
       next.classList.add('active');
     }, 6000);
 
-    // Pause/resume hero videos when the tab is hidden/visible
+    // Keep only the active video playing
     const heroVideos = Array.from(document.querySelectorAll('.hero-slide video'));
     function setPlayback(paused) {
       heroVideos.forEach(v => {
@@ -359,30 +370,33 @@
     const obs = new MutationObserver(() => setPlayback(false));
     document.querySelectorAll('.hero-slide').forEach(el => obs.observe(el, { attributes: true, attributeFilter: ['class'] }));
 
-    // Email submission (swap to Formspree/Netlify Forms for production)
-    document.getElementById('evaluationForm').addEventListener('submit', function(e){
+    // Reveal on scroll (IntersectionObserver for performance)
+    const revealer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('reveal-in');
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealer.observe(el));
+
+    // Formspree submission (replace "yourFormID" with your real Form ID)
+    document.getElementById('evaluationForm').addEventListener('submit', async function(e){
       e.preventDefault();
       const data = new FormData(e.target);
-      const subject = encodeURIComponent('Property Evaluation Request — VistaOne Properties');
-      const body = encodeURIComponent([
-        `Name: ${data.get('name')}`,
-        `Phone: ${data.get('phone')}`,
-        `Email: ${data.get('email') || 'N/A'}`,
-        `Address: ${data.get('address')}`,
-        `Type: ${data.get('type') || 'N/A'}`,
-        `Size: ${data.get('size') || 'N/A'}`,
-        `Price Expectation: ${data.get('price') || 'N/A'}`,
-        `Road Access: ${data.get('road_access') || 'N/A'}`,
-        `Electric: ${data.get('electric') || 'N/A'}`,
-        `Water: ${data.get('water') || 'N/A'}`,
-        `Sewer: ${data.get('sewer') || 'N/A'}`,
-        `Flood: ${data.get('flood') || 'N/A'}`,
-        `APN: ${data.get('apn') || 'N/A'}`,
-        `Callback only: ${data.get('callback_only') ? 'Yes' : 'No'}`,
-        '',
-        `Notes: ${data.get('notes') || 'N/A'}`
-      ].join('\n'));
-      window.location.href = `mailto:hello@vistaoneproperties.com?subject=${subject}&body=${body}`;
+      try {
+        const res = await fetch("https://formspree.io/f/yourFormID", {
+          method: "POST",
+          headers: { "Accept": "application/json" },
+          body: data
+        });
+        if (res.ok) {
+          alert("Thanks! We’ll review your property and follow up soon.");
+          e.target.reset();
+        } else {
+          alert("Submission failed. Please email hello@vistaoneproperties.com.");
+        }
+      } catch {
+        alert("Network error. Please email hello@vistaoneproperties.com.");
+      }
     });
   </script>
 </body>
