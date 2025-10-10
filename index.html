@@ -12,8 +12,8 @@
     .hero-slide.active { opacity: 1; }
   </style>
 
-  <!-- Preload first hero to reduce flash -->
-  <link rel="preload" as="image" href="./assets/hero1.jpg">
+  <!-- Preload first hero -->
+  <link rel="preload" as="image" href="./assets:hero1.jpg">
 </head>
 <body class="bg-neutral-50 text-neutral-900">
 
@@ -41,28 +41,21 @@
   <!-- HERO (Rotating: aerial mansions + land) -->
   <section class="relative overflow-hidden h-[450px] md:h-[600px]">
     <div class="absolute inset-0">
-      <!-- Mansion estate aerial -->
       <div id="hero1" class="hero-slide active">
-        <img src="./assets/hero1.jpg"
+        <img src="./assets:hero1.jpg"
              alt="Aerial view of luxury estate with pool and landscaped grounds"
-             class="w-full h-full object-cover" loading="eager"
-             onerror="this.onerror=null;this.src='./assets/hero2.jpg';" />
+             class="w-full h-full object-cover" loading="eager" />
       </div>
-      <!-- Mansion surrounded by acreage -->
       <div id="hero2" class="hero-slide">
-        <img src="./assets/hero2.jpg"
+        <img src="./assets:hero2.jpg"
              alt="Drone view of modern mansion and surrounding land"
-             class="w-full h-full object-cover" loading="lazy"
-             onerror="this.onerror=null;this.src='./assets/hero3.jpg';" />
+             class="w-full h-full object-cover" loading="lazy" />
       </div>
-      <!-- Neighborhood + open land / plots -->
       <div id="hero3" class="hero-slide">
-        <img src="./assets/hero3.jpg"
+        <img src="./assets:hero3.jpg"
              alt="Aerial neighborhood next to open land and parcels"
-             class="w-full h-full object-cover" loading="lazy"
-             onerror="this.onerror=null;this.src='./assets/hero1.jpg';" />
+             class="w-full h-full object-cover" loading="lazy" />
       </div>
-      <!-- Dark overlay for legible text -->
       <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/10"></div>
     </div>
 
@@ -178,7 +171,7 @@
     </form>
   </section>
 
-  <!-- ABOUT (condensed) -->
+  <!-- ABOUT -->
   <section id="about" class="bg-white border-t border-neutral-200">
     <div class="container mx-auto px-4 py-16 grid md:grid-cols-3 gap-8 items-start">
       <div class="md:col-span-2">
@@ -207,10 +200,22 @@
     <div class="container mx-auto px-4 py-16">
       <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-sky-900">FAQs</h2>
       <div class="mt-6 grid md:grid-cols-2 gap-6 text-sm text-neutral-800">
-        <div class="rounded-2xl border border-sky-100 bg-white p-5"><div class="font-semibold">How fast can you evaluate?</div><p class="mt-2">Usually within 24–48 hours after we receive APN/address and basic utility/access info.</p></div>
-        <div class="rounded-2xl border border-sky-100 bg-white p-5"><div class="font-semibold">Do you buy homes too?</div><p class="mt-2">Yes—SFRs that meet our buy box. We can also place assignments via our buyer network.</p></div>
-        <div class="rounded-2xl border border-sky-100 bg-white p-5"><div class="font-semibold">Are you a brokerage?</div><p class="mt-2">We operate as a private acquisitions company and may partner with licensed agents when appropriate.</p></div>
-        <div class="rounded-2xl border border-sky-100 bg-white p-5"><div class="font-semibold">What about flood/wetlands?</div><p class="mt-2">We review FEMA/state data. Mitigable scenarios may still qualify depending on access/comps.</p></div>
+        <div class="rounded-2xl border border-sky-100 bg-white p-5">
+          <div class="font-semibold">How fast can you evaluate?</div>
+          <p class="mt-2">Usually within 24–48 hours after we receive APN/address and basic utility/access info.</p>
+        </div>
+        <div class="rounded-2xl border border-sky-100 bg-white p-5">
+          <div class="font-semibold">Do you buy homes too?</div>
+          <p class="mt-2">Yes—SFRs that meet our buy box. We can also place assignments via our buyer network.</p>
+        </div>
+        <div class="rounded-2xl border border-sky-100 bg-white p-5">
+          <div class="font-semibold">Are you a brokerage?</div>
+          <p class="mt-2">We operate as a private acquisitions company and may partner with licensed agents when appropriate.</p>
+        </div>
+        <div class="rounded-2xl border border-sky-100 bg-white p-5">
+          <div class="font-semibold">What about flood/wetlands?</div>
+          <p class="mt-2">We review FEMA/state data. Mitigable scenarios may still qualify depending on access/comps.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -288,5 +293,6 @@
       window.location.href = `mailto:hello@vistaoneproperties.com?subject=${subject}&body=${body}`;
     });
   </script>
+
 </body>
 </html>
