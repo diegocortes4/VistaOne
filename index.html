@@ -11,44 +11,33 @@
     .container { max-width: 1200px; }
 
     /* HERO crossfade + layering (GPU hints reduce flicker) */
-    .hero-slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 1.0s ease-in-out;
-      z-index: 1;
-      will-change: opacity;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      transform: translateZ(0);
-      contain: paint;
+    .hero-slide{
+      position:absolute; inset:0; opacity:0;
+      transition:opacity 1.0s ease-in-out;
+      z-index:1;
+      will-change:opacity;
+      backface-visibility:hidden; -webkit-backface-visibility:hidden;
+      transform:translateZ(0);
+      contain:paint;
     }
-    .hero-slide.active { opacity: 1; z-index: 2; }
-    .hero-slide video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      pointer-events: none;
+    .hero-slide.active{ opacity:1; z-index:2; }
+    .hero-slide video{
+      position:absolute; inset:0; width:100%; height:100%;
+      object-fit:cover; display:block; pointer-events:none;
     }
     /* Per-slide gradient (between video and text) */
-    .hero-slide::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.28), rgba(0,0,0,0.10));
-      z-index: 3;
-      pointer-events: none;
+    .hero-slide::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,.28), rgba(0,0,0,.10));
+      z-index:3; pointer-events:none;
     }
 
     /* Reveal animations for sections */
-    .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease; }
-    .reveal.reveal-in { opacity: 1; transform: translateY(0); }
+    .reveal{ opacity:0; transform:translateY(40px); transition:opacity .8s ease, transform .8s ease; }
+    .reveal.reveal-in{ opacity:1; transform:translateY(0); }
 
     /* Hide <details> content when closed (older browsers) */
-    .details[hidden] { display: none; }
+    .details[hidden]{ display:none; }
   </style>
 
   <!-- Preload first hero to reduce initial flash -->
@@ -89,6 +78,9 @@
       </div>
       <div id="hero3" class="hero-slide">
         <video src="./hero3.mp4" autoplay muted loop playsinline preload="auto"></video>
+      </div>
+      <div id="hero4" class="hero-slide">
+        <video src="./hero4.mp4" autoplay muted loop playsinline preload="auto"></video>
       </div>
     </div>
 
@@ -344,73 +336,72 @@
   </footer>
 
   <script>
-    /* --------------------------
-       HERO crossfade (all videos play; only wrappers fade)
-    ---------------------------*/
+    /* ========= HERO logic: smooth crossfade, no visible restart ========= */
     const slides = [
       document.getElementById('hero1'),
       document.getElementById('hero2'),
-      document.getElementById('hero3')
-    ];
+      document.getElementById('hero3'),
+      document.getElementById('hero4')
+    ].filter(Boolean);
+
     const vids = Array.from(document.querySelectorAll('.hero-slide video'));
 
-    // Stagger start times a bit so crossfades don't show same frame
-    vids.forEach((v, idx) => {
+    // Skip the very first frames at loop seams (prevents flash at t=0)
+    function installLoopSeamSkipper(v){
+      let justLooped = false;
+      v.addEventListener('timeupdate', ()=>{
+        if (v.currentTime < 0.12 && !justLooped){ v.currentTime = 0.12; justLooped = true; }
+        if (v.currentTime > 0.5) justLooped = false;
+      });
+    }
+
+    // Start all videos and stagger their offsets so fades don't show same frame
+    vids.forEach((v, idx)=>{
+      v.muted = true; v.playsInline = true; v.preload = "auto";
       const onMeta = () => {
-        try {
-          if (Number.isFinite(v.duration) && v.duration > 5) {
-            const offset = (idx * 2) % Math.max(1, (v.duration - 1));
+        try{
+          if (Number.isFinite(v.duration) && v.duration > 6){
+            const offset = (idx * 2.25) % Math.max(1, (v.duration - 1));
             v.currentTime = offset;
           }
-        } catch(e) {}
-        const p = v.play();
-        if (p && typeof p.catch === 'function') p.catch(() => {});
+        }catch(e){}
+        v.play().catch(()=>{});
+        installLoopSeamSkipper(v);
       };
       if (v.readyState >= 1) onMeta();
-      else v.addEventListener('loadedmetadata', onMeta, { once: true });
+      else v.addEventListener('loadedmetadata', onMeta, { once:true });
     });
 
-    // Crossfade timer
+    // Crossfade rotation
     let i = 0;
-    setInterval(() => {
+    setInterval(()=>{
       const current = slides[i];
       i = (i + 1) % slides.length;
       const next = slides[i];
       current.classList.remove('active');
       next.classList.add('active');
-    }, 7000);
+    }, 6500);
 
-    // Pause/resume when tab hidden/visible
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) vids.forEach(v => v.pause());
-      else vids.forEach(v => v.play().catch(() => {}));
+    // Keep playing when tab re-focused
+    document.addEventListener('visibilitychange', ()=>{
+      if (!document.hidden) vids.forEach(v=>v.play().catch(()=>{}));
     });
 
-    /* --------------------------
-       Reveal-on-scroll
-    ---------------------------*/
-    const revealer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('reveal-in');
-      });
+    /* ========= Reveal-on-scroll ========= */
+    const revealer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('reveal-in'); });
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => revealer.observe(el));
 
-    /* --------------------------
-       Form submit: Formspree (fallback to mailto)
-       Replace YOUR_FORM_ID below, e.g. "xyzzabcd"
-    ---------------------------*/
-    const FORMSPREE_ID = "YOUR_FORM_ID"; // <-- put your Formspree form ID here
-    const FORMSPREE_URL = FORMSPREE_ID && FORMSPREE_ID !== "YOUR_FORM_ID"
-      ? `https://formspree.io/f/${FORMSPREE_ID}`
-      : null;
+    /* ========= Form: Formspree with graceful fallback ========= */
+    const FORMSPREE_ID = "YOUR_FORM_ID"; // replace with your Formspree ID to enable AJAX submit
+    const FORMSPREE_URL = FORMSPREE_ID && FORMSPREE_ID !== "YOUR_FORM_ID" ? `https://formspree.io/f/${FORMSPREE_ID}` : null;
 
     document.getElementById('evaluationForm').addEventListener('submit', async function(e){
       e.preventDefault();
       const data = new FormData(e.target);
 
-      // If no Formspree ID, use mailto fallback
-      if (!FORMSPREE_URL) {
+      if (!FORMSPREE_URL){
         const subject = encodeURIComponent('Property Evaluation Request — VistaOne Properties');
         const body = encodeURIComponent([
           `Name: ${data.get('name')}`,
@@ -434,19 +425,11 @@
         return;
       }
 
-      try {
-        const res = await fetch(FORMSPREE_URL, {
-          method: "POST",
-          headers: { "Accept": "application/json" },
-          body: data
-        });
-        if (res.ok) {
-          alert("Thanks! We’ll review your property and follow up soon.");
-          e.target.reset();
-        } else {
-          alert("Submission failed. Please email hello@vistaoneproperties.com.");
-        }
-      } catch {
+      try{
+        const res = await fetch(FORMSPREE_URL, { method:"POST", headers:{ "Accept":"application/json" }, body:data });
+        if (res.ok){ alert("Thanks! We’ll review your property and follow up soon."); e.target.reset(); }
+        else { alert("Submission failed. Please email hello@vistaoneproperties.com."); }
+      }catch{
         alert("Network error. Please email hello@vistaoneproperties.com.");
       }
     });
