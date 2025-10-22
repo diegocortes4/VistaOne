@@ -272,53 +272,62 @@
     </form>
   </div>
 </section>
-<!-- 🟢 VistaOne: Webhook + keep email submit -->
+<!-- 🟢 VistaOne: Webhook + keep email submit (robust) -->
 <script>
-  (function () {
-    const form = document.querySelector('form');
-    if (!form) return console.warn("❌ No <form> found");
+  window.addEventListener('DOMContentLoaded', () => {
+    // 1) Find the intended form
+    const form = document.getElementById('landForm') || document.querySelector('form');
+    if (!form) {
+      console.warn('❌ VistaOne: no <form> found; webhook not attached');
+      return;
+    }
+    console.log('✅ VistaOne: webhook attached to form', form);
 
-    const url = "https://vistaone.app.n8n.cloud/webhook/vistaone-land-form-v2";
-    const key = "vo_prod_v2_7b8a"; // x-vistaone-key
+    // 2) Webhook config
+    const url = 'https://vistaone.app.n8n.cloud/webhook/vistaone-land-form-v2';
+    const key = 'vo_prod_v2_7b8a'; // x-vistaone-key
 
-    form.addEventListener("submit", (e) => {
-      // Stop default navigation briefly so we can fire-and-forget the webhook,
-      // then immediately continue the original submit.
+    // 3) Submit handler
+    form.addEventListener('submit', (e) => {
+      // Pause native submit briefly so we can fire-and-forget the webhook
       e.preventDefault();
 
+      const q = (sel) => form.querySelector(sel);
       const data = {
-        name: form.querySelector('input[name="name"]')?.value ?? '',
-        phone: form.querySelector('input[name="phone"]')?.value ?? '',
-        email: form.querySelector('input[name="email"]')?.value ?? '',
-        address: form.querySelector('input[name="address"]')?.value ?? '',
-        property_type: form.querySelector('select[name="type"]')?.value ?? '',
-        size: form.querySelector('input[name="size"]')?.value ?? '',
-        price: form.querySelector('input[name="price"]')?.value ?? '',
-        road_access: form.querySelector('select[name="road_access"]')?.value ?? '',
-        electric: form.querySelector('select[name="electric"]')?.value ?? '',
-        water: form.querySelector('select[name="water"]')?.value ?? '',
-        sewer: form.querySelector('select[name="sewer"]')?.value ?? '',
-        flood: form.querySelector('select[name="flood"]')?.value ?? '',
-        apn: form.querySelector('input[name="apn"]')?.value ?? '',
-        notes: form.querySelector('textarea[name="notes"]')?.value ?? '',
+        name:        q('input[name="name"]')?.value ?? '',
+        phone:       q('input[name="phone"]')?.value ?? '',
+        email:       q('input[name="email"]')?.value ?? '',
+        address:     q('input[name="address"]')?.value ?? '',
+        property_type: q('select[name="type"]')?.value ?? '',
+        size:        q('input[name="size"]')?.value ?? '',
+        price:       q('input[name="price"]')?.value ?? '',
+        road_access: q('select[name="road_access"]')?.value ?? '',
+        electric:    q('select[name="electric"]')?.value ?? '',
+        water:       q('select[name="water"]')?.value ?? '',
+        sewer:       q('select[name="sewer"]')?.value ?? '',
+        flood:       q('select[name="flood"]')?.value ?? '',
+        apn:         q('input[name="apn"]')?.value ?? '',
+        notes:       q('textarea[name="notes"]')?.value ?? '',
         submitted_at: new Date().toISOString(),
       };
 
-      // Fire-and-forget webhook; keepalive lets it finish during navigation.
+      console.log('🚀 VistaOne: sending to n8n', data);
+
+      // Fire-and-forget webhook; allow it to finish during page navigation
       fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "x-vistaone-key": key
+          'Content-Type': 'application/json',
+          'x-vistaone-key': key
         },
         body: JSON.stringify(data),
         keepalive: true
-      }).catch(()=>{ /* ignore */ });
+      }).catch(() => {}); // ignore network errors here so form still submits
 
-      // Immediately continue with the original form action (email/Zoho/etc.)
-      form.submit();
+      // Resume original submit after a tiny delay so fetch can start
+      setTimeout(() => form.submit(), 150);
     });
-  })();
+  });
 </script>
 
 
