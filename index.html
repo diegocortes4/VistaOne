@@ -276,6 +276,7 @@
 <!-- 🟢 Telegram Webhook Integration -->
 <script>
 document.querySelector('form').addEventListener('submit', async (e) => {
+  e.preventDefault();                     // <-- important
   try {
     const data = {
       name: document.querySelector('input[name="name"]').value,
@@ -294,19 +295,18 @@ document.querySelector('form').addEventListener('submit', async (e) => {
       notes: document.querySelector('textarea[name="notes"]').value,
     };
 
-    // ✅ Add this line — it prints all form data in your browser console
-    console.log('Sending to n8n:', data);
+    console.log('Sending to n8n:', data);  // <-- put this right here
 
-    await fetch("https://vistaone.app.n8n.cloud/webhook/vistaone-land-form", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    await fetch('https://vistaone.app.n8n.cloud/webhook-test/vistaone-land-form', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
-      keepalive: true
     });
   } catch (err) {
-    console.error("Telegram alert error:", err);
+    console.error('Telegram alert error:', err);
   }
 });
+
 </script>
 
 
