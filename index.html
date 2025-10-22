@@ -296,8 +296,12 @@
         notes: document.querySelector('textarea[name="notes"]')?.value ?? '',
         submitted_at: new Date().toISOString(),
       };
-
-      const url = 'https://vistaone.app.n8n.cloud/webhook/vistaone-land-form';
+      
+await fetch("https://vistaone.app.n8n.cloud/webhook/vistaone-land-form", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(data)
+});
 
       try {
         const ok = navigator.sendBeacon?.(
