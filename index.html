@@ -273,6 +273,40 @@
   </div>
 </section>
 
+<!-- 🟢 Telegram Webhook Integration -->
+<script>
+document.querySelector('form').addEventListener('submit', async (e) => {
+  try {
+    const data = {
+      name: document.querySelector('input[name="name"]').value,
+      phone: document.querySelector('input[name="phone"]').value,
+      email: document.querySelector('input[name="email"]').value,
+      address: document.querySelector('input[name="address"]').value,
+      property_type: document.querySelector('select[name="type"]').value,
+      size: document.querySelector('input[name="size"]').value,
+      price: document.querySelector('input[name="price"]').value,
+      road_access: document.querySelector('select[name="road_access"]').value,
+      electric: document.querySelector('select[name="electric"]').value,
+      water: document.querySelector('select[name="water"]').value,
+      sewer: document.querySelector('select[name="sewer"]').value,
+      flood: document.querySelector('select[name="flood"]').value,
+      apn: document.querySelector('input[name="apn"]').value,
+      notes: document.querySelector('textarea[name="notes"]').value
+    };
+
+    await fetch("https://vistaone.app.n8n.cloud/webhook-test/vistaone-land-form", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+  } catch (err) {
+    console.error("Telegram alert error:", err);
+  }
+});
+</script>
+
+<!-- Existing About Section -->
+<section id="about" class="bg-white border-t border-neutral-200 reveal">
 
   <!-- ABOUT -->
   <section id="about" class="bg-white border-t border-neutral-200 reveal">
