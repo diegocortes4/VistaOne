@@ -294,7 +294,7 @@ document.querySelector('form').addEventListener('submit', async (e) => {
       notes: document.querySelector('textarea[name="notes"]').value
     };
 
-    await fetch("https://vistaone.app.n8n.cloud/webhook-test/vistaone-land-form", {
+    await fetch("https://vistaone.app.n8n.cloud/webhook/vistaone-land-form", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
