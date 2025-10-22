@@ -278,8 +278,7 @@
   (function () {
     const form = document.querySelector('form');
     form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
+      // Let your normal form continue, but first fire the webhook reliably
       const data = {
         name: document.querySelector('input[name="name"]')?.value ?? '',
         phone: document.querySelector('input[name="phone"]')?.value ?? '',
@@ -295,10 +294,10 @@
         flood: document.querySelector('select[name="flood"]')?.value ?? '',
         apn: document.querySelector('input[name="apn"]')?.value ?? '',
         notes: document.querySelector('textarea[name="notes"]')?.value ?? '',
-        submitted_at: new Date().toISOString()
+        submitted_at: new Date().toISOString(),
       };
 
-      const url = 'https://vistaone.app.n8n.cloud/webhook/vistaone-land-form'; // use /webhook-test/... only while “listening”
+      const url = 'https://vistaone.app.n8n.cloud/webhook/vistaone-land-form';
 
       try {
         const ok = navigator.sendBeacon?.(
@@ -314,8 +313,7 @@
           }).catch(()=>{});
         }
       } catch (_) {}
-
-      form.submit(); // continue your current email/Zoho submission
+      // DO NOT preventDefault here; your existing email/Zoho submit proceeds.
     });
   })();
 </script>
