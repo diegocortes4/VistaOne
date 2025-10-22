@@ -274,56 +274,48 @@
 </section>
 
 <!-- 🟢 Telegram Webhook Integration -->
-<!-- ✅ Telegram Webhook Integration -->
 <script>
   (function () {
     const form = document.querySelector('form');
-
     form.addEventListener('submit', (e) => {
-      // 1) DO NOT block the normal submit anymore.
-      // We'll fire the webhook in parallel so your Zoho/FormSubmit keeps working.
+      e.preventDefault();
 
-      // 2) Collect the values
       const data = {
-        name:        document.querySelector('input[name="name"]')?.value ?? '',
-        phone:       document.querySelector('input[name="phone"]')?.value ?? '',
-        email:       document.querySelector('input[name="email"]')?.value ?? '',
-        address:     document.querySelector('input[name="address"]')?.value ?? '',
+        name: document.querySelector('input[name="name"]')?.value ?? '',
+        phone: document.querySelector('input[name="phone"]')?.value ?? '',
+        email: document.querySelector('input[name="email"]')?.value ?? '',
+        address: document.querySelector('input[name="address"]')?.value ?? '',
         property_type: document.querySelector('select[name="type"]')?.value ?? '',
-        size:        document.querySelector('input[name="size"]')?.value ?? '',
-        price:       document.querySelector('input[name="price"]')?.value ?? '',
+        size: document.querySelector('input[name="size"]')?.value ?? '',
+        price: document.querySelector('input[name="price"]')?.value ?? '',
         road_access: document.querySelector('select[name="road_access"]')?.value ?? '',
-        electric:    document.querySelector('select[name="electric"]')?.value ?? '',
-        water:       document.querySelector('select[name="water"]')?.value ?? '',
-        sewer:       document.querySelector('select[name="sewer"]')?.value ?? '',
-        flood:       document.querySelector('select[name="flood"]')?.value ?? '',
-        apn:         document.querySelector('input[name="apn"]')?.value ?? '',
-        notes:       document.querySelector('textarea[name="notes"]')?.value ?? '',
+        electric: document.querySelector('select[name="electric"]')?.value ?? '',
+        water: document.querySelector('select[name="water"]')?.value ?? '',
+        sewer: document.querySelector('select[name="sewer"]')?.value ?? '',
+        flood: document.querySelector('select[name="flood"]')?.value ?? '',
+        apn: document.querySelector('input[name="apn"]')?.value ?? '',
+        notes: document.querySelector('textarea[name="notes"]')?.value ?? '',
         submitted_at: new Date().toISOString()
       };
 
-      // 3) Send to n8n **in the background**
-      //    Use your n8n URL:
-      //    - While clicking “Listen for test event”:  /webhook-test/vistaone-land-form
-      //    - After you activate the workflow:         /webhook/vistaone-land-form
-      const N8N_URL = 'https://vistaone.app.n8n.cloud/webhook/vistaone-land-form'; // <- use /webhook for production
-      // const N8N_URL = 'https://vistaone.app.n8n.cloud/webhook-test/vistaone-land-form'; // <- use this ONLY while listening
+      const url = 'https://vistaone.app.n8n.cloud/webhook/vistaone-land-form'; // use /webhook-test/... only while “listening”
 
-      // Fire-and-forget so navigation doesn’t cancel it
       try {
-        console.log('Sending to n8n:', data);
-        fetch(N8N_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-          keepalive: true,            // ✅ important when the page navigates after submit
-        }).catch(() => {});
-      } catch (err) {
-        console.error('n8n send failed:', err);
-      }
+        const ok = navigator.sendBeacon?.(
+          url,
+          new Blob([JSON.stringify(data)], { type: 'application/json' })
+        );
+        if (!ok) {
+          fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+            keepalive: true,
+          }).catch(()=>{});
+        }
+      } catch (_) {}
 
-      // 4) Let the browser continue with the normal form action to Zoho/FormSubmit
-      // (no preventDefault, no manual submit)
+      form.submit(); // continue your current email/Zoho submission
     });
   })();
 </script>
