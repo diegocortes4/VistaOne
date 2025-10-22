@@ -273,55 +273,65 @@
   </div>
 </section>
 
-<!-- 🟢 Telegram Webhook Integration -->
+  <!-- 🟢 Telegram Webhook Integration -->
 <script>
   (function () {
     const form = document.querySelector('form');
-    form.addEventListener('submit', (e) => {
-      // Let your normal form continue, but first fire the webhook reliably
+    if (!form) return console.warn("❌ No <form> found on page");
+
+    const url = "https://vistaone.app.n8n.cloud/webhook/vistaone-land-form-v2";
+    const key = "vo_prod_v2_7b8a"; // your x-vistaone-key
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault(); // prevent default to avoid page reload
+
       const data = {
-        name: document.querySelector('input[name="name"]')?.value ?? '',
-        phone: document.querySelector('input[name="phone"]')?.value ?? '',
-        email: document.querySelector('input[name="email"]')?.value ?? '',
-        address: document.querySelector('input[name="address"]')?.value ?? '',
-        property_type: document.querySelector('select[name="type"]')?.value ?? '',
-        size: document.querySelector('input[name="size"]')?.value ?? '',
-        price: document.querySelector('input[name="price"]')?.value ?? '',
-        road_access: document.querySelector('select[name="road_access"]')?.value ?? '',
-        electric: document.querySelector('select[name="electric"]')?.value ?? '',
-        water: document.querySelector('select[name="water"]')?.value ?? '',
-        sewer: document.querySelector('select[name="sewer"]')?.value ?? '',
-        flood: document.querySelector('select[name="flood"]')?.value ?? '',
-        apn: document.querySelector('input[name="apn"]')?.value ?? '',
-        notes: document.querySelector('textarea[name="notes"]')?.value ?? '',
+        name: form.querySelector('input[name="name"]')?.value ?? '',
+        phone: form.querySelector('input[name="phone"]')?.value ?? '',
+        email: form.querySelector('input[name="email"]')?.value ?? '',
+        address: form.querySelector('input[name="address"]')?.value ?? '',
+        property_type: form.querySelector('select[name="type"]')?.value ?? '',
+        size: form.querySelector('input[name="size"]')?.value ?? '',
+        price: form.querySelector('input[name="price"]')?.value ?? '',
+        road_access: form.querySelector('select[name="road_access"]')?.value ?? '',
+        electric: form.querySelector('select[name="electric"]')?.value ?? '',
+        water: form.querySelector('select[name="water"]')?.value ?? '',
+        sewer: form.querySelector('select[name="sewer"]')?.value ?? '',
+        flood: form.querySelector('select[name="flood"]')?.value ?? '',
+        apn: form.querySelector('input[name="apn"]')?.value ?? '',
+        notes: form.querySelector('textarea[name="notes"]')?.value ?? '',
         submitted_at: new Date().toISOString(),
       };
-      
-await fetch("https://vistaone.app.n8n.cloud/webhook/vistaone-land-form", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(data)
-});
+
+      console.log("Sending to n8n:", data);
 
       try {
-        const ok = navigator.sendBeacon?.(
-          url,
-          new Blob([JSON.stringify(data)], { type: 'application/json' })
-        );
-        if (!ok) {
-          fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-            keepalive: true,
-          }).catch(()=>{});
+        const res = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-vistaone-key": key,
+          },
+          body: JSON.stringify(data),
+        });
+
+        console.log("Response status:", res.status);
+        const json = await res.json().catch(() => ({}));
+        console.log("Webhook response:", json);
+
+        if (res.ok) {
+          alert("✅ Thank you! Your form was sent successfully.");
+          form.reset();
+        } else {
+          alert("⚠️ Submission failed, please try again later.");
         }
-      } catch (_) {}
-      // DO NOT preventDefault here; your existing email/Zoho submit proceeds.
+      } catch (err) {
+        console.error("Submit failed:", err);
+        alert("❌ Could not send form, please try again.");
+      }
     });
   })();
 </script>
-
 
 
 <!-- Existing About Section -->
