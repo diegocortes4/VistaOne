@@ -295,10 +295,11 @@ document.querySelector('form').addEventListener('submit', async (e) => {
     };
 
     await fetch("https://vistaone.app.n8n.cloud/webhook/vistaone-land-form", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+});
+
   } catch (err) {
     console.error("Telegram alert error:", err);
   }
