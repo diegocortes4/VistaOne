@@ -291,20 +291,24 @@ document.querySelector('form').addEventListener('submit', async (e) => {
       sewer: document.querySelector('select[name="sewer"]').value,
       flood: document.querySelector('select[name="flood"]').value,
       apn: document.querySelector('input[name="apn"]').value,
-      notes: document.querySelector('textarea[name="notes"]').value
+      notes: document.querySelector('textarea[name="notes"]').value,
     };
 
-    await fetch("https://vistaone.app.n8n.cloud/webhook/vistaone-land-form", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(data),
-});
+    // ✅ Add this line — it prints all form data in your browser console
+    console.log('Sending to n8n:', data);
 
+    await fetch("https://vistaone.app.n8n.cloud/webhook/vistaone-land-form", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+      keepalive: true
+    });
   } catch (err) {
     console.error("Telegram alert error:", err);
   }
 });
 </script>
+
 
 <!-- Existing About Section -->
 <section id="about" class="bg-white border-t border-neutral-200 reveal">
