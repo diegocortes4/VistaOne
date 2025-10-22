@@ -272,60 +272,68 @@
     </form>
   </div>
 </section>
-<!-- 🟢 VistaOne: Webhook + keep email submit (robust) -->
+
+  
+  <!-- 🟢 VistaOne: Webhook + keep email submit (robust) -->
 <script>
   window.addEventListener('DOMContentLoaded', () => {
-    // 1) Find the intended form
     const form = document.getElementById('landForm') || document.querySelector('form');
-    if (!form) {
-      console.warn('❌ VistaOne: no <form> found; webhook not attached');
-      return;
-    }
-    console.log('✅ VistaOne: webhook attached to form', form);
+    if (!form) return console.warn('❌ VistaOne: no <form> found');
 
-    // 2) Webhook config
     const url = 'https://vistaone.app.n8n.cloud/webhook/vistaone-land-form-v2';
-    const key = 'vo_prod_v2_7b8a'; // x-vistaone-key
+    const key = 'vo_prod_v2_7b8a';
 
-    // 3) Submit handler
     form.addEventListener('submit', (e) => {
-      // Pause native submit briefly so we can fire-and-forget the webhook
+      // Pause briefly so we can send the webhook first
       e.preventDefault();
 
-      const q = (sel) => form.querySelector(sel);
+      const q = (s) => form.querySelector(s);
       const data = {
-        name:        q('input[name="name"]')?.value ?? '',
-        phone:       q('input[name="phone"]')?.value ?? '',
-        email:       q('input[name="email"]')?.value ?? '',
-        address:     q('input[name="address"]')?.value ?? '',
-        property_type: q('select[name="type"]')?.value ?? '',
-        size:        q('input[name="size"]')?.value ?? '',
-        price:       q('input[name="price"]')?.value ?? '',
-        road_access: q('select[name="road_access"]')?.value ?? '',
-        electric:    q('select[name="electric"]')?.value ?? '',
-        water:       q('select[name="water"]')?.value ?? '',
-        sewer:       q('select[name="sewer"]')?.value ?? '',
-        flood:       q('select[name="flood"]')?.value ?? '',
-        apn:         q('input[name="apn"]')?.value ?? '',
-        notes:       q('textarea[name="notes"]')?.value ?? '',
+        name:         q('input[name="name"]')?.value ?? '',
+        phone:        q('input[name="phone"]')?.value ?? '',
+        email:        q('input[name="email"]')?.value ?? '',
+        address:      q('input[name="address"]')?.value ?? '',
+        property_type:q('select[name="type"]')?.value ?? '',
+        size:         q('input[name="size"]')?.value ?? '',
+        price:        q('input[name="price"]')?.value ?? '',
+        road_access:  q('select[name="road_access"]')?.value ?? '',
+        electric:     q('select[name="electric"]')?.value ?? '',
+        water:        q('select[name="water"]')?.value ?? '',
+        sewer:        q('select[name="sewer"]')?.value ?? '',
+        flood:        q('select[name="flood"]')?.value ?? '',
+        apn:          q('input[name="apn"]')?.value ?? '',
+        notes:        q('textarea[name="notes"]')?.value ?? '',
         submitted_at: new Date().toISOString(),
       };
 
-      console.log('🚀 VistaOne: sending to n8n', data);
+      console.log('🚀 sending webhook →', url, data);
 
-      // Fire-and-forget webhook; allow it to finish during page navigation
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-vistaone-key': key
-        },
-        body: JSON.stringify(data),
-        keepalive: true
-      }).catch(() => {}); // ignore network errors here so form still submits
+      // Prefer sendBeacon (survives navigation)
+      try {
+        const ok = navigator.sendBeacon?.(
+          url,
+          new Blob([JSON.stringify(data)], { type: 'application/json' })
+        );
+        if (ok) console.log('✅ beacon queued');
+      } catch (_) {}
 
-      // Resume original submit after a tiny delay so fetch can start
-      setTimeout(() => form.submit(), 150);
+      // Also kick off a fetch with keepalive (don’t await)
+      try {
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-vistaone-key': key },
+          body: JSON.stringify(data),
+          keepalive: true,
+          mode: 'cors',
+        }).then(r => console.log('✅ fetch started, status (once available):', r.status))
+          .catch(()=>{});
+      } catch (_) {}
+
+      // Give the network a beat to start, then submit to formsubmit.co
+      setTimeout(() => {
+        console.log('➡️ continuing native submit to formsubmit.co');
+        form.submit();
+      }, 600); // increase if needed
     });
   });
 </script>
