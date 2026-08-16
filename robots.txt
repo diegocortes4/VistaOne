@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vistaoneproperties.com/sitemap.xml
+Sitemap: https://www.vistaoneproperties.com/sitemap.xml
