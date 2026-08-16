@@ -38,7 +38,29 @@
 
     /* Hide <details> content when closed (older browsers) */
     .details[hidden]{ display:none; }
-  </style>
+  
+/* --- Legal sections (Privacy / Terms) readable styling --- */
+#privacy, #terms{
+  max-width: 900px; margin-left:auto; margin-right:auto;
+  background:#fff; border:1px solid #e5e5e5; border-radius:1rem;
+  padding:2rem 1.75rem; box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+#privacy > h2, #terms > h2{
+  font-size:1.75rem; font-weight:700; color:#0c4a6e;
+  letter-spacing:-.02em; margin-bottom:.25rem;
+  padding-bottom:.75rem; border-bottom:2px solid #e0f2fe;
+}
+#privacy h3, #terms h3{
+  font-size:1.05rem; font-weight:650; color:#075985;
+  margin-top:1.75rem; margin-bottom:.5rem;
+}
+#privacy p, #terms p{ margin-bottom:.9rem; line-height:1.75; color:#404040; }
+#privacy ul, #terms ul{ margin:.5rem 0 1rem 0; padding-left:1.25rem; list-style:disc; }
+#privacy li, #terms li{ margin-bottom:.45rem; line-height:1.7; color:#404040; }
+#privacy a, #terms a{ color:#0369a1; text-decoration:underline; }
+#privacy em, #terms em{ color:#737373; font-size:.875rem; }
+#privacy strong, #terms strong{ color:#171717; }
+</style>
 
   <!-- Preload first hero to reduce initial flash -->
   <link rel="preload" as="video" href="./hero1.mp4">
@@ -106,6 +128,30 @@
           </a>
         </div>
       </div>
+
+      <div class="w-full">
+        <div class="rounded-2xl bg-white/95 backdrop-blur shadow-2xl p-6 border border-white/40">
+          <h2 class="text-xl font-bold text-sky-900">Get a Property Evaluation</h2>
+          <p class="mt-1 text-sm text-neutral-600">Tell us about the property. We&#39;ll review and follow up with next steps.</p>
+          <form action="https://formsubmit.co/info@vistaoneproperties.com" method="POST" class="mt-4 space-y-3">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="New Land Evaluation Request from VistaOne (Hero Form)">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://www.vistaoneproperties.com/thankyou.html">
+            <input type="text" name="_honey" style="display:none">
+            <input type="text" name="name" placeholder="Your Name" required class="w-full rounded-xl border border-neutral-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+            <input type="text" name="address" placeholder="Property Address &#8226; City &#8226; State" required class="w-full rounded-xl border border-neutral-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+            <input type="email" name="email" placeholder="Email" required class="w-full rounded-xl border border-neutral-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+            <input type="tel" name="phone" placeholder="Phone (optional)" class="w-full rounded-xl border border-neutral-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+            <button type="submit" class="w-full rounded-2xl bg-sky-700 text-white px-4 py-3 font-medium hover:bg-sky-800">Request Evaluation</button>
+          </form>
+          <p class="mt-3 text-[11px] leading-snug text-neutral-500">
+            By submitting, you agree to be contacted by VistaOne Properties. We respect your privacy.
+            Need more detail? <a href="#evaluate" class="text-sky-700 underline">Use the full form</a>.
+          </p>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -201,6 +247,7 @@
       <!-- Essentials -->
       <div class="grid md:grid-cols-2 gap-4">
         <input type="text" name="name" placeholder="Your Name" class="rounded-xl border border-neutral-300 px-3 py-2" required />
+        <input type="tel" name="phone" placeholder="Phone" class="rounded-xl border border-neutral-300 px-3 py-2" />
       </div>
       <input type="text" name="address" placeholder="Property Address • City • State" class="rounded-xl border border-neutral-300 px-3 py-2" required />
       <input type="email" name="email" placeholder="Email (optional)" class="rounded-xl border border-neutral-300 px-3 py-2" />
