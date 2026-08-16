@@ -126,6 +126,18 @@
           <input required type="email" name="email" placeholder="Email" class="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
           <input name="phone" placeholder="Phone (optional)" class="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
           <input required name="parcel" placeholder="Parcel ID or address" class="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+          <select required name="wetlands" class="w-full rounded-xl border border-neutral-300 px-3 py-2 text-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <option value="">Does the lot have wetlands?</option>
+            <option value="No">No wetlands</option>
+            <option value="Yes">Yes, has wetlands</option>
+            <option value="Not sure">Not sure</option>
+          </select>
+          <select name="flood" class="w-full rounded-xl border border-neutral-300 px-3 py-2 text-neutral-700 focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <option value="">Flood zone? (optional)</option>
+            <option value="No">Not in a flood zone</option>
+            <option value="Yes">In a flood zone</option>
+            <option value="Not sure">Not sure</option>
+          </select>
           <textarea name="notes" rows="2" placeholder="Anything we should know? (estate, back taxes, HOA balance)" class="w-full rounded-xl border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
           <button type="submit" class="w-full rounded-xl bg-sky-600 text-white px-4 py-3 font-medium hover:bg-sky-700">Request My Offer</button>
         </form>
@@ -162,7 +174,7 @@
     </p>
     <ul class="mt-4 space-y-2 list-disc list-inside text-neutral-700">
       <li><strong>Flood zone.</strong> Much of western Charlotte County carries a flood designation. It doesn't stop a sale, but it changes what a builder can do and therefore what the parcel is worth.</li>
-      <li><strong>Wetlands.</strong> Portions of some sections are wet or partially wet, which limits the buildable footprint.</li>
+      <li><strong>Wetlands.</strong> Portions of some sections are wet or partially wet. This one matters most &mdash; most builders will not take on wetland permitting, so a wetland parcel is usually not something we can buy. Worth telling us at the start so nobody wastes time.</li>
       <li><strong>Position on the street.</strong> Interior neighborhood lots are more desirable than parcels fronting a main road.</li>
       <li><strong>Lot size and shape.</strong> Standard Rotonda West lots run around a quarter acre; irregular or narrow parcels are harder to build on.</li>
       <li><strong>Utilities.</strong> Whether the parcel has county water and sewer available, or would need well and septic.</li>
@@ -176,19 +188,19 @@
 
     <h2 class="mt-10 text-2xl font-bold text-sky-950">Common reasons owners sell</h2>
     <div class="mt-4 grid sm:grid-cols-2 gap-4">
-      <div class="rounded-2xl border border-neutral-200 p-5">
+      <div class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-lg hover:-translate-y-1">
         <div class="font-semibold text-sky-900">Inherited land</div>
         <p class="mt-1 text-sm text-neutral-700">A parent or grandparent bought the lot decades ago. Now it's in an estate, split between siblings, and nobody intends to build.</p>
       </div>
-      <div class="rounded-2xl border border-neutral-200 p-5">
+      <div class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-lg hover:-translate-y-1">
         <div class="font-semibold text-sky-900">Out-of-state ownership</div>
         <p class="mt-1 text-sm text-neutral-700">You've never seen the parcel, and managing taxes and dues from another state has stopped making sense.</p>
       </div>
-      <div class="rounded-2xl border border-neutral-200 p-5">
+      <div class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-lg hover:-translate-y-1">
         <div class="font-semibold text-sky-900">Back taxes or HOA dues</div>
         <p class="mt-1 text-sm text-neutral-700">Balances have built up over the years. These are normally cleared at closing from the sale proceeds.</p>
       </div>
-      <div class="rounded-2xl border border-neutral-200 p-5">
+      <div class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-lg hover:-translate-y-1">
         <div class="font-semibold text-sky-900">Plans changed</div>
         <p class="mt-1 text-sm text-neutral-700">The retirement build never happened, and the lot has simply become a line item you'd rather close out.</p>
       </div>
@@ -196,11 +208,11 @@
 
     <h2 class="mt-10 text-2xl font-bold text-sky-950">How the process works</h2>
     <ol class="mt-4 space-y-4">
-      <li class="flex gap-3"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">1</span><div><strong>Send the parcel number.</strong> The 12-digit Charlotte County parcel ID, or just the address or legal description if that's what you have.</div></li>
-      <li class="flex gap-3"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">2</span><div><strong>We research it.</strong> Appraiser record, GIS, flood zone, wetlands, utilities, access and any environmental flags. No cost and no obligation to you.</div></li>
-      <li class="flex gap-3"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">3</span><div><strong>Written offer in 24&ndash;48 hours.</strong> A specific number with the terms in writing, not a vague range.</div></li>
-      <li class="flex gap-3"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">4</span><div><strong>Title company closes it.</strong> A licensed Florida title company handles title work and disbursement. Remote and online notary options are available.</div></li>
-      <li class="flex gap-3"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">5</span><div><strong>You get paid.</strong> Wire or check at closing, typically 21&ndash;30 days from signed contract.</div></li>
+      <li class="flex gap-3 rounded-xl p-2 -m-2 transition duration-200 hover:bg-sky-50"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">1</span><div><strong>Send the parcel number.</strong> The 12-digit Charlotte County parcel ID, or just the address or legal description if that's what you have.</div></li>
+      <li class="flex gap-3 rounded-xl p-2 -m-2 transition duration-200 hover:bg-sky-50"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">2</span><div><strong>We research it.</strong> Appraiser record, GIS, flood zone, wetlands, utilities, access and any environmental flags. No cost and no obligation to you.</div></li>
+      <li class="flex gap-3 rounded-xl p-2 -m-2 transition duration-200 hover:bg-sky-50"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">3</span><div><strong>Written offer in 24&ndash;48 hours.</strong> A specific number with the terms in writing, not a vague range.</div></li>
+      <li class="flex gap-3 rounded-xl p-2 -m-2 transition duration-200 hover:bg-sky-50"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">4</span><div><strong>Title company closes it.</strong> A licensed Florida title company handles title work and disbursement. Remote and online notary options are available.</div></li>
+      <li class="flex gap-3 rounded-xl p-2 -m-2 transition duration-200 hover:bg-sky-50"><span class="flex-none h-7 w-7 rounded-full bg-sky-600 text-white text-sm flex items-center justify-center">5</span><div><strong>You get paid.</strong> Wire or check at closing, typically 21&ndash;30 days from signed contract.</div></li>
     </ol>
 
     <h2 class="mt-10 text-2xl font-bold text-sky-950">Also buying throughout Charlotte County</h2>
@@ -213,12 +225,12 @@
 
     <h2 class="mt-10 text-2xl font-bold text-sky-950">Questions we get most often</h2>
     <div class="mt-4 space-y-3">
-      <details class="rounded-2xl border border-neutral-200 p-5"><summary class="font-semibold text-sky-900 cursor-pointer">How long does it take to close?</summary><p class="mt-2 text-neutral-700">Most purchases close in 21&ndash;30 days through a Florida title company. Estates, trusts and unpaid balances can add time, which is why we ask about them upfront.</p></details>
-      <details class="rounded-2xl border border-neutral-200 p-5"><summary class="font-semibold text-sky-900 cursor-pointer">Do I have to travel to Florida?</summary><p class="mt-2 text-neutral-700">No. Most Rotonda West owners live out of state. Documents are handled remotely with a mobile or online notary.</p></details>
-      <details class="rounded-2xl border border-neutral-200 p-5"><summary class="font-semibold text-sky-900 cursor-pointer">What if I owe back taxes or HOA dues?</summary><p class="mt-2 text-neutral-700">Very common, and not a barrier. Balances are normally settled at closing out of the proceeds. Tell us the situation so the offer reflects it accurately.</p></details>
-      <details class="rounded-2xl border border-neutral-200 p-5"><summary class="font-semibold text-sky-900 cursor-pointer">Do I need a survey or appraisal?</summary><p class="mt-2 text-neutral-700">No. We do our own research from public records. You're never asked to pay for a survey, appraisal or inspection.</p></details>
-      <details class="rounded-2xl border border-neutral-200 p-5"><summary class="font-semibold text-sky-900 cursor-pointer">What does it cost me?</summary><p class="mt-2 text-neutral-700">No agent commission and no listing fee. Closing costs are handled as set out in the purchase contract.</p></details>
-      <details class="rounded-2xl border border-neutral-200 p-5"><summary class="font-semibold text-sky-900 cursor-pointer">What if the lot is in a flood zone or has wetlands?</summary><p class="mt-2 text-neutral-700">We still buy. It affects value rather than eligibility. We check flood mapping and wetlands before quoting, so the number we give already accounts for it.</p></details>
+      <details class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-md"><summary class="font-semibold text-sky-900 cursor-pointer">How long does it take to close?</summary><p class="mt-2 text-neutral-700">Most purchases close in 21&ndash;30 days through a Florida title company. Estates, trusts and unpaid balances can add time, which is why we ask about them upfront.</p></details>
+      <details class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-md"><summary class="font-semibold text-sky-900 cursor-pointer">Do I have to travel to Florida?</summary><p class="mt-2 text-neutral-700">No. Most Rotonda West owners live out of state. Documents are handled remotely with a mobile or online notary.</p></details>
+      <details class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-md"><summary class="font-semibold text-sky-900 cursor-pointer">What if I owe back taxes or HOA dues?</summary><p class="mt-2 text-neutral-700">Very common, and not a barrier. Balances are normally settled at closing out of the proceeds. Tell us the situation so the offer reflects it accurately.</p></details>
+      <details class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-md"><summary class="font-semibold text-sky-900 cursor-pointer">Do I need a survey or appraisal?</summary><p class="mt-2 text-neutral-700">No. We do our own research from public records. You're never asked to pay for a survey, appraisal or inspection.</p></details>
+      <details class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-md"><summary class="font-semibold text-sky-900 cursor-pointer">What does it cost me?</summary><p class="mt-2 text-neutral-700">No agent commission and no listing fee. Closing costs are handled as set out in the purchase contract.</p></details>
+      <details class="rounded-2xl border border-neutral-200 p-5 transition duration-200 hover:border-sky-400 hover:shadow-md"><summary class="font-semibold text-sky-900 cursor-pointer">What if the lot is in a flood zone or has wetlands?</summary><p class="mt-2 text-neutral-700">Flood zone and wetlands are two different things. A flood designation is common in this part of Charlotte County and does not stop a sale &mdash; it affects value. Wetlands are much harder, because most builders will not take on the permitting, so a wetland parcel is often not something we can purchase. Tell us upfront either way and we will check the mapping and give you a straight answer quickly rather than leaving you waiting.</p></details>
     </div>
   </article>
 
